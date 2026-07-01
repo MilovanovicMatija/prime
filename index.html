@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PRIME | Agents for your code</title>
+    <link rel="icon" type="image/svg+xml" href="./logo.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="fetch" type="model/gltf-binary" href="./models/scene.glb" crossorigin="anonymous" />
+    <link rel="preload" as="image" href="./grid.svg" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" crossorigin src="./assets/index-KGsutJUw.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-oyZMP_SR.css">
+  </head>
+  <body>
+    <!-- preloader (covers everything until the model is ready) -->
+    <div class="preloader" id="preloader">
+      <img class="preloader__grid" src="./grid.svg" alt="" aria-hidden="true" />
+      <div class="preloader__inner">
+        <div class="preloader__num"><span id="plNum">0</span><i>%</i></div>
+        <div class="preloader__bar"><span id="plBar"></span></div>
+      </div>
+    </div>
+
+    <!-- z0 solid bg -->
+    <div class="bg"></div>
+    <!-- z1 static dark grid -->
+    <img class="grid-bg" src="./grid.svg" alt="" aria-hidden="true" />
+
+    <!-- z2 hero title behind the statue; each half clips at the centre line -->
+    <div class="hero-behind" id="heroBehind">
+      <h1 class="hero-title">
+        <span class="hero-clip hero-clip--l"><span class="line line--left">Product Security.</span></span>
+        <span class="hero-clip hero-clip--r"><span class="line line--right">At its Prime.</span></span>
+      </h1>
+      <div class="hero-copy" id="heroCopy">
+        <p class="hero-desc">
+          Prime Agents know your security architecture, your code, and your history
+          so every change gets the right security coverage, every time.
+        </p>
+        <a class="primary-btn hero-btn">Book a demo</a>
+      </div>
+    </div>
+
+    <!-- z2 stats sit BEHIND the statue, so the statue occludes them where they overlap -->
+    <div class="stage stage--behind">
+      <div class="stage__item" data-stage="stats">
+        <div class="stats">
+          <div class="stat">
+            <b class="num" data-to="15" data-suffix="">0</b>
+            <span class="stat__label">minute<br />security reviews</span>
+          </div>
+          <div class="stat">
+            <b class="num" data-to="100" data-suffix="%">0</b>
+            <span class="stat__label">coverage of your<br />development activity</span>
+          </div>
+          <div class="stat">
+            <b class="num" data-to="80" data-suffix="%">0</b>
+            <span class="stat__label">Fewer false positives<br />than traditional scanners</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- z6 bottom logo marquee — hidden until stats, then fades in OVER the statue -->
+    <div class="footer-bar" id="footerBar">
+      <div class="marquee"><div class="marquee__track" id="logoTrack"></div></div>
+    </div>
+
+    <!-- z5 3D statue -->
+    <canvas id="webgl"></canvas>
+
+    <!-- z6 end text: cascades in after the dissolve, fills white top-down on scroll, then removes line-by-line -->
+    <div class="stage">
+      <div class="stage__item" data-stage="endtext">
+        <h2 class="endtext" id="endText">
+          <span class="endtext__line"><span class="endtext__inner">
+            <span class="endtext__base">Before the code.</span>
+            <span class="endtext__fill" aria-hidden="true">Before the code.</span>
+          </span></span>
+          <span class="endtext__line"><span class="endtext__inner">
+            <span class="endtext__base">In the code.</span>
+            <span class="endtext__fill" aria-hidden="true">In the code.</span>
+          </span></span>
+          <span class="endtext__line"><span class="endtext__inner">
+            <span class="endtext__base">After the code.</span>
+            <span class="endtext__fill" aria-hidden="true">After the code.</span>
+            <img class="endtext__tile" src="./code-tile.png" alt="" aria-hidden="true" />
+          </span></span>
+        </h2>
+      </div>
+    </div>
+
+    <!-- z7 tabs UI: per-tab title (left) + copy (right), and the bottom progress tracker
+         (the tab-3 light rays now render inside the WebGL canvas, in the tab-image group) -->
+    <div class="tabs-ui" id="tabsUi" aria-hidden="true">
+      <div class="tab-content" data-tab="0">
+        <h2 class="tab-title">
+          <span class="tab-title__line"><span class="tab-title__inner">Autonomous</span></span>
+          <span class="tab-title__line"><span class="tab-title__inner">Design</span></span>
+          <span class="tab-title__line"><span class="tab-title__inner">Reviews</span></span>
+        </h2>
+        <div class="tab-copy">
+          <p class="tab-desc">You don't trigger reviews. Prime does. Every design checked, every risk scored, every fix validated in code.</p>
+          <a class="primary-btn tab-btn">Discover more
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.8538 8.35378L9.35375 12.8538C9.25993 12.9476 9.13268 13.0003 9 13.0003C8.86732 13.0003 8.74007 12.9476 8.64625 12.8538C8.55243 12.76 8.49972 12.6327 8.49972 12.5C8.49972 12.3674 8.55243 12.2401 8.64625 12.1463L12.2931 8.50003H2.5C2.36739 8.50003 2.24021 8.44736 2.14645 8.35359C2.05268 8.25982 2 8.13264 2 8.00003C2 7.86743 2.05268 7.74025 2.14645 7.64648C2.24021 7.55271 2.36739 7.50003 2.5 7.50003H12.2931L8.64625 3.85378C8.55243 3.75996 8.49972 3.63272 8.49972 3.50003C8.49972 3.36735 8.55243 3.2401 8.64625 3.14628C8.74007 3.05246 8.86732 2.99976 9 2.99976C9.13268 2.99976 9.25993 3.05246 9.35375 3.14628L13.8538 7.64628C13.9002 7.69272 13.9371 7.74786 13.9623 7.80856C13.9874 7.86926 14.0004 7.93433 14.0004 8.00003C14.0004 8.06574 13.9874 8.13081 13.9623 8.1915C13.9371 8.2522 13.9002 8.30735 13.8538 8.35378Z" fill="#1A1A1A"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="tab-content" data-tab="1">
+        <h2 class="tab-title">
+          <span class="tab-title__line"><span class="tab-title__inner">Autonomous</span></span>
+          <span class="tab-title__line"><span class="tab-title__inner">Design</span></span>
+          <span class="tab-title__line"><span class="tab-title__inner">Reviews</span></span>
+        </h2>
+        <div class="tab-copy">
+          <p class="tab-desc">Review every PR, human or agent written, against your security policies and industry best practices with the 80% of the noise stripped out.</p>
+          <a class="primary-btn tab-btn">Discover more
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.8538 8.35378L9.35375 12.8538C9.25993 12.9476 9.13268 13.0003 9 13.0003C8.86732 13.0003 8.74007 12.9476 8.64625 12.8538C8.55243 12.76 8.49972 12.6327 8.49972 12.5C8.49972 12.3674 8.55243 12.2401 8.64625 12.1463L12.2931 8.50003H2.5C2.36739 8.50003 2.24021 8.44736 2.14645 8.35359C2.05268 8.25982 2 8.13264 2 8.00003C2 7.86743 2.05268 7.74025 2.14645 7.64648C2.24021 7.55271 2.36739 7.50003 2.5 7.50003H12.2931L8.64625 3.85378C8.55243 3.75996 8.49972 3.63272 8.49972 3.50003C8.49972 3.36735 8.55243 3.2401 8.64625 3.14628C8.74007 3.05246 8.86732 2.99976 9 2.99976C9.13268 2.99976 9.25993 3.05246 9.35375 3.14628L13.8538 7.64628C13.9002 7.69272 13.9371 7.74786 13.9623 7.80856C13.9874 7.86926 14.0004 7.93433 14.0004 8.00003C14.0004 8.06574 13.9874 8.13081 13.9623 8.1915C13.9371 8.2522 13.9002 8.30735 13.8538 8.35378Z" fill="#1A1A1A"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="tab-content" data-tab="2">
+        <h2 class="tab-title">
+          <span class="tab-title__line"><span class="tab-title__inner">Continuous</span></span>
+          <span class="tab-title__line"><span class="tab-title__inner">White Box</span></span>
+          <span class="tab-title__line"><span class="tab-title__inner">Pentesting</span></span>
+        </h2>
+        <div class="tab-copy">
+          <p class="tab-desc">Maps how your services talk, where your data flows, and how an attacker would chain it all together. The risk traditional scanners can’t see.</p>
+          <a class="primary-btn tab-btn">Discover more
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.8538 8.35378L9.35375 12.8538C9.25993 12.9476 9.13268 13.0003 9 13.0003C8.86732 13.0003 8.74007 12.9476 8.64625 12.8538C8.55243 12.76 8.49972 12.6327 8.49972 12.5C8.49972 12.3674 8.55243 12.2401 8.64625 12.1463L12.2931 8.50003H2.5C2.36739 8.50003 2.24021 8.44736 2.14645 8.35359C2.05268 8.25982 2 8.13264 2 8.00003C2 7.86743 2.05268 7.74025 2.14645 7.64648C2.24021 7.55271 2.36739 7.50003 2.5 7.50003H12.2931L8.64625 3.85378C8.55243 3.75996 8.49972 3.63272 8.49972 3.50003C8.49972 3.36735 8.55243 3.2401 8.64625 3.14628C8.74007 3.05246 8.86732 2.99976 9 2.99976C9.13268 2.99976 9.25993 3.05246 9.35375 3.14628L13.8538 7.64628C13.9002 7.69272 13.9371 7.74786 13.9623 7.80856C13.9874 7.86926 14.0004 7.93433 14.0004 8.00003C14.0004 8.06574 13.9874 8.13081 13.9623 8.1915C13.9371 8.2522 13.9002 8.30735 13.8538 8.35378Z" fill="#1A1A1A"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="tab-content" data-tab="3">
+        <h2 class="tab-title">
+          <span class="tab-title__line"><span class="tab-title__inner">AI Coding</span></span>
+          <span class="tab-title__line"><span class="tab-title__inner">Guardrails</span></span>
+        </h2>
+        <div class="tab-copy">
+          <p class="tab-desc">Embed your security policies directly into AI coding workflows so every line of generated code is inherently secure.</p>
+          <a class="primary-btn tab-btn">Discover more
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.8538 8.35378L9.35375 12.8538C9.25993 12.9476 9.13268 13.0003 9 13.0003C8.86732 13.0003 8.74007 12.9476 8.64625 12.8538C8.55243 12.76 8.49972 12.6327 8.49972 12.5C8.49972 12.3674 8.55243 12.2401 8.64625 12.1463L12.2931 8.50003H2.5C2.36739 8.50003 2.24021 8.44736 2.14645 8.35359C2.05268 8.25982 2 8.13264 2 8.00003C2 7.86743 2.05268 7.74025 2.14645 7.64648C2.24021 7.55271 2.36739 7.50003 2.5 7.50003H12.2931L8.64625 3.85378C8.55243 3.75996 8.49972 3.63272 8.49972 3.50003C8.49972 3.36735 8.55243 3.2401 8.64625 3.14628C8.74007 3.05246 8.86732 2.99976 9 2.99976C9.13268 2.99976 9.25993 3.05246 9.35375 3.14628L13.8538 7.64628C13.9002 7.69272 13.9371 7.74786 13.9623 7.80856C13.9874 7.86926 14.0004 7.93433 14.0004 8.00003C14.0004 8.06574 13.9874 8.13081 13.9623 8.1915C13.9371 8.2522 13.9002 8.30735 13.8538 8.35378Z" fill="#1A1A1A"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="tab-content" data-tab="4">
+        <h2 class="tab-title">
+          <span class="tab-title__line"><span class="tab-title__inner">On-Demand</span></span>
+          <span class="tab-title__line"><span class="tab-title__inner">Security</span></span>
+          <span class="tab-title__line"><span class="tab-title__inner">Knowledge</span></span>
+        </h2>
+        <div class="tab-copy">
+          <p class="tab-desc">Every developer gets a security architect on demand. Trained on your organization's context, answering in real time, anywhere they work.</p>
+          <a class="primary-btn tab-btn">Discover more
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.8538 8.35378L9.35375 12.8538C9.25993 12.9476 9.13268 13.0003 9 13.0003C8.86732 13.0003 8.74007 12.9476 8.64625 12.8538C8.55243 12.76 8.49972 12.6327 8.49972 12.5C8.49972 12.3674 8.55243 12.2401 8.64625 12.1463L12.2931 8.50003H2.5C2.36739 8.50003 2.24021 8.44736 2.14645 8.35359C2.05268 8.25982 2 8.13264 2 8.00003C2 7.86743 2.05268 7.74025 2.14645 7.64648C2.24021 7.55271 2.36739 7.50003 2.5 7.50003H12.2931L8.64625 3.85378C8.55243 3.75996 8.49972 3.63272 8.49972 3.50003C8.49972 3.36735 8.55243 3.2401 8.64625 3.14628C8.74007 3.05246 8.86732 2.99976 9 2.99976C9.13268 2.99976 9.25993 3.05246 9.35375 3.14628L13.8538 7.64628C13.9002 7.69272 13.9371 7.74786 13.9623 7.80856C13.9874 7.86926 14.0004 7.93433 14.0004 8.00003C14.0004 8.06574 13.9874 8.13081 13.9623 8.1915C13.9371 8.2522 13.9002 8.30735 13.8538 8.35378Z" fill="#1A1A1A"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <nav class="tabs-nav">
+        <button class="tab-nav__item" data-tab="0"><span class="tab-nav__label">Autonomous Design Reviews</span><span class="tab-nav__bar"><span class="tab-nav__fill"></span></span></button>
+        <button class="tab-nav__item" data-tab="1"><span class="tab-nav__label">Autonomous Design Reviews</span><span class="tab-nav__bar"><span class="tab-nav__fill"></span></span></button>
+        <button class="tab-nav__item" data-tab="2"><span class="tab-nav__label">Continuous White Box Pentesting</span><span class="tab-nav__bar"><span class="tab-nav__fill"></span></span></button>
+        <button class="tab-nav__item" data-tab="3"><span class="tab-nav__label">AI Coding Guardrails</span><span class="tab-nav__bar"><span class="tab-nav__fill"></span></span></button>
+        <button class="tab-nav__item" data-tab="4"><span class="tab-nav__label">On-Demand Security Knowledge</span><span class="tab-nav__bar"><span class="tab-nav__fill"></span></span></button>
+      </nav>
+    </div>
+
+    <div class="scroll-space"></div>
+  </body>
+</html>
